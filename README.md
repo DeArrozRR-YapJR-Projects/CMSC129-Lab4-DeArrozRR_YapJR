@@ -25,9 +25,10 @@ This project is built using Test-Driven Development (TDD), where tests are writt
 - Unit Testing: Jest + React Testing Library
 - Integration Testing: Jest + Supertest
 - System Testing: Playwright
-- Data Storage: localStorage or in-memory state (JavaScript array)
+- Backend: Express.js (runs alongside Next.js)
+- Data Storage: In-memory array
 
-No backend or database is required for this project.
+An Express backend runs on port 3001, proxied through Next.js rewrites at `/api/*`.
 
 ---
 
@@ -47,12 +48,14 @@ Examples:
 ---
 
 ### 🔹 2. Integration Tests
-Integration tests verify the interaction between React components and business logic. These tests ensure that user actions correctly update the UI state.
+Integration tests verify the Express API endpoints using Supertest. These tests ensure that the backend responds correctly to HTTP requests.
 
 Examples:
-- Rendering a list of reminders
-- Adding a reminder through a form and verifying UI update
-- Deleting a reminder and confirming it disappears from the UI
+- GET /api/reminders returns the list of reminders
+- POST /api/reminders adds a reminder and returns 201
+- POST /api/reminders returns 400 for invalid input
+- PATCH /api/reminders toggles completion or updates title
+- DELETE /api/reminders removes a reminder by ID
 
 ---
 
@@ -93,7 +96,7 @@ npx playwright test
 ![Integration Tests Passing](public/integration-tests-pass.png)
 
 ### System Tests
-![System Tests Passing](public/final-results.png)
+![System Tests Passing](public/systems-tests-pass.png)
 
 ---
 
