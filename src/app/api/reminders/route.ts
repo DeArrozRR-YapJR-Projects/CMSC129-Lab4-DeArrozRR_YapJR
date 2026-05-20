@@ -24,21 +24,24 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const reminders = getReminders();
-    const exists = reminders.some(r => r.id === body.id);
-    if (!exists) {
-      return NextResponse.json({ error: 'Reminder not found' }, { status: 404 });
+       try {
+         const body = await request.json();
+         const reminders = getReminders();
+         const index = reminders.findIndex(r => r.id === body.id);
+        if (index === -1) return NextResponse.json({ error: 'NotFound' }, { status: 404 });
+    
+         if (body.title) {
+           reminders[index].title = body.title;
+        } else {
+          reminders[index].completed = !reminders[index].completed;
+        }
+   
+        setReminders(reminders);
+        return NextResponse.json(reminders[index], { status: 200 });
+     } catch (error) {
+        return NextResponse.json({ error: 'Invalid' }, { status: 400 });
+      }
     }
-    const updatedList = toggleReminder(reminders, body.id);
-    setReminders(updatedList);
-    const updated = updatedList.find(r => r.id === body.id);
-    return NextResponse.json(updated, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
-  }
-}
 
 export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
