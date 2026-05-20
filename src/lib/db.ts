@@ -9,3 +9,7 @@ export const getReminders = (): Reminder[] => {
 export const setReminders = (newReminders: Reminder[]): void => {
   remindersList = newReminders;
 };
+
+export const resetReminders = (): void => {
+  remindersList = [];
+};
