@@ -79,3 +79,10 @@ npm test
 
 # Run system tests (Playwright)
 npx playwright test
+
+---
+
+## 📊 Test Results
+   
+### Unit Tests
+![Unit Tests Passing](public/unit-tests-pass.png)
