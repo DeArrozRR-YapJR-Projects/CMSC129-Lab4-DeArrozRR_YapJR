@@ -89,3 +89,14 @@ npx playwright test
 
 ### Integration Tests
 ![Integration Tests Passing](public/integration-tests-pass.png)
+
+### System Tests
+![System Tests Passing](public/final-results.png)
+
+---
+
+## 📝 Reflection
+
+The most difficult part of writing tests before the code was the mental shift required to think about the "what" before the "how." In the beginning, it felt slow because we couldn't just start building the UI or the logic. We had to spend time defining the exact inputs and outputs for every function and component before they even existed. For example, during the unit testing phase, we had to decide on the validation rules for a reminder title before we even knew how the form would look. Another challenge was intentionally pushing code that we knew would fail in the CI pipeline. It felt strange at first, but we realized that this is the best way to prove that the tests are actually effective. It also helped us catch small bugs early, like when our system tests failed because of a simple mismatched button label.
+
+Writing tests first definitely changed the way we designed our code. It made our design much more intentional and modular. Instead of writing one big block of code, we were forced to break things down into smaller, testable units like pure functions for validation and separate API routes for data handling. It also made us prioritize reliability; for instance, we had to rethink our data management and use unique titles in our system tests to prevent data persistence issues between test runs. This led to a more robust application that is easier to maintain. Overall, while TDD felt slower at first, it resulted in a cleaner architecture where every line of code exists for a specific, verified reason. We felt much more confident during the refactor phases because we knew the tests would immediately alert us if we broke anything.
