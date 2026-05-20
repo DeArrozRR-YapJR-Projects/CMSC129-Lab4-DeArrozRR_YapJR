@@ -6,6 +6,18 @@ import { validateReminder } from '../src/lib/validation';
 const app = express();
 app.use(express.json());
 
+function getQueryId(req: express.Request): string | null {
+  return (req.query.id as string) || null;
+}
+
+function getBodyId(req: express.Request): string | null {
+  return req.body?.id || null;
+}
+
+function findReminderIndex(id: string): number {
+  return getReminders().findIndex(r => r.id === id);
+}
+
 app.get('/api/reminders', (req, res) => {
   res.json(getReminders());
 });
@@ -20,25 +32,25 @@ app.post('/api/reminders', (req, res) => {
 });
 
 app.patch('/api/reminders', (req, res) => {
-  const { id, title } = req.body;
+  const id = getBodyId(req);
   if (!id) return res.status(400).json({ error: 'ID is required' });
 
-  const reminders = getReminders();
-  const index = reminders.findIndex(r => r.id === id);
+  const index = findReminderIndex(id);
   if (index === -1) return res.status(404).json({ error: 'Not found' });
 
-  if (title) {
-    reminders[index].title = title;
+  const reminders = getReminders();
+  if (req.body.title) {
+    reminders[index].title = req.body.title;
   } else {
     reminders[index].completed = !reminders[index].completed;
   }
-
   setReminders(reminders);
+
   res.json(reminders[index]);
 });
 
 app.delete('/api/reminders', (req, res) => {
-  const id = req.query.id as string;
+  const id = getQueryId(req);
   if (!id) return res.status(400).json({ error: 'ID is required' });
 
   setReminders(deleteReminder(getReminders(), id));
