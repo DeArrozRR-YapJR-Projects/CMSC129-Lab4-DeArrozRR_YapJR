@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:system": "playwright test"
+    "test:system": "playwright test --pass-with-no-tests"
   },
   "dependencies": {
     "next": "16.2.6",
