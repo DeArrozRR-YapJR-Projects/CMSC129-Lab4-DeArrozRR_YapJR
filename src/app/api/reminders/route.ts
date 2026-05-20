@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Reminder, addReminder, deleteReminder, toggleReminder } from '@/lib/reminders';
+import { addReminder, deleteReminder, toggleReminder } from '@/lib/reminders';
 import { validateReminder } from '@/lib/validation';
-
-let remindersList: Reminder[] = [];
+import { getReminders, setReminders } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
-  return NextResponse.json(remindersList);
+  return NextResponse.json(getReminders());
 }
 
 export async function POST(request: NextRequest) {
@@ -14,8 +13,10 @@ export async function POST(request: NextRequest) {
     if (!validateReminder(body)) {
       return NextResponse.json({ error: 'Validation failed' }, { status: 400 });
     }
-    remindersList = addReminder(remindersList, body.title);
-    const created = remindersList[remindersList.length - 1];
+    const reminders = getReminders();
+    const updatedList = addReminder(reminders, body.title);
+    setReminders(updatedList);
+    const created = updatedList[updatedList.length - 1];
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
@@ -25,12 +26,14 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const exists = remindersList.some(r => r.id === body.id);
+    const reminders = getReminders();
+    const exists = reminders.some(r => r.id === body.id);
     if (!exists) {
       return NextResponse.json({ error: 'Reminder not found' }, { status: 404 });
     }
-    remindersList = toggleReminder(remindersList, body.id);
-    const updated = remindersList.find(r => r.id === body.id);
+    const updatedList = toggleReminder(reminders, body.id);
+    setReminders(updatedList);
+    const updated = updatedList.find(r => r.id === body.id);
     return NextResponse.json(updated, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
@@ -43,6 +46,8 @@ export async function DELETE(request: NextRequest) {
   if (!id) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
   }
-  remindersList = deleteReminder(remindersList, id);
+  const reminders = getReminders();
+  const updatedList = deleteReminder(reminders, id);
+  setReminders(updatedList);
   return NextResponse.json({ success: true }, { status: 200 });
 }
