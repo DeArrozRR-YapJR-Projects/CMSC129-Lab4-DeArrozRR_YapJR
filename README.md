@@ -20,7 +20,7 @@ This project is built using Test-Driven Development (TDD), where tests are writt
 
 ## 🧰 Tech Stack
 
-- Frontend: React + TypeScript (Vite)
+- Frontend: Next.js
 - Styling: TailwindCSS
 - Unit & Integration Testing: Jest + React Testing Library
 - System Testing: Playwright
