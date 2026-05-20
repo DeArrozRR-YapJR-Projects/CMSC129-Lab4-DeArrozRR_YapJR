@@ -1,4 +1,4 @@
-// Final UI implementation for reminders
+// Final UI implementation for reminders app, with full CRUD functionality and basic styling.
 'use client';
      
       import { useState, useEffect } from 'react';
