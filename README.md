@@ -75,8 +75,7 @@ Examples:
 # Install dependencies
 npm install
 
-# Run development servers (backend + frontend in separate terminals)
-npm run dev:backend
+# Run both backend (Express :3001) and frontend (Next.js :3000) together
 npm run dev
 
 # Run unit + integration tests
