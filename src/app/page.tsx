@@ -1,58 +1,8 @@
-// Final UI implementation for reminders app, with full CRUD functionality and basic styling.
 'use client';
      
       import { useState, useEffect } from 'react';
       import { Reminder } from '@/lib/reminders';
-     
-      function ReminderItem({ 
-        reminder, 
-        onDelete, 
-        onUpdate 
-     }: { 
-       reminder: Reminder, 
-       onDelete: (id: string) => void,
-       onUpdate: (id: string, newTitle: string) => void
-     }) {
-       const [isEditing, setIsEditing] = useState(false);
-       const [editValue, setEditValue] = useState(reminder.title);
-    
-       const handleUpdate = () => {
-         if (editValue.trim().length >= 3) {
-           onUpdate(reminder.id, editValue);
-           setIsEditing(false);
-         }
-       };
-    
-       return (
-         <li className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border
-       border-gray-200">
-           {isEditing ? (
-             <div className="flex gap-2 w-full">
-               <input 
-                 className="flex-1 px-2 py-1 border rounded text-black"
-                 value={editValue}
-                 onChange={(e) => setEditValue(e.target.value)}
-                 autoFocus
-               />
-              <button onClick={handleUpdate} className="text-green-600
-       font-bold">Save</button>
-              <button onClick={() => setIsEditing(false)}
-       className="text-gray-500">Cancel</button>
-             </div>
-           ) : (
-             <>
-               <span className="text-gray-800 font-medium">{reminder.title}</span>
-               <div className="flex gap-4">
-                 <button onClick={() => setIsEditing(true)} className="text-blue-500
-       hover:text-blue-700">Edit</button>
-                 <button onClick={() => onDelete(reminder.id)} className="text-red-500 hover:text-red-700
-     font-bold">Delete</button>
-               </div>
-             </>
-           )}
-         </li>
-       );
-     }
+      import ReminderItem from '@/app/components/ReminderItem';
     
      export default function RemindersPage() {
        const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -86,7 +36,19 @@
          if (res.ok) setReminders(reminders.filter(r => r.id !== id));
        };
     
-       const handleUpdate = async (id: string, newTitle: string) => {
+        const handleToggle = async (id: string) => {
+          const res = await fetch('/api/reminders', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id }),
+          });
+          if (res.ok) {
+            const updated = await res.json();
+            setReminders(reminders.map(r => r.id === id ? updated : r));
+          }
+        };
+
+        const handleUpdate = async (id: string, newTitle: string) => {
          const res = await fetch('/api/reminders', {
            method: 'PATCH',
            headers: { 'Content-Type': 'application/json' },
@@ -116,8 +78,8 @@
               {loading ? <p>Loading...</p> : (
                 <ul className="space-y-3">
                   {reminders.map(r => (
-                    <ReminderItem key={r.id} reminder={r} onDelete={handleDelete}
-       onUpdate={handleUpdate} />
+<ReminderItem key={r.id} reminder={r} onDelete={handleDelete}
+        onUpdate={handleUpdate} onToggle={handleToggle} />
                   ))}
                 </ul>
               )}
