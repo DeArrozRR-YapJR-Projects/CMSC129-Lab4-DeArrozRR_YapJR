@@ -22,7 +22,8 @@ This project is built using Test-Driven Development (TDD), where tests are writt
 
 - Frontend: Next.js
 - Styling: TailwindCSS
-- Unit & Integration Testing: Jest + React Testing Library
+- Unit Testing: Jest + React Testing Library
+- Integration Testing: Jest + Supertest
 - System Testing: Playwright
 - Data Storage: localStorage or in-memory state (JavaScript array)
 
@@ -71,7 +72,8 @@ Examples:
 # Install dependencies
 npm install
 
-# Run development server
+# Run development servers (backend + frontend in separate terminals)
+npm run dev:backend
 npm run dev
 
 # Run unit + integration tests
