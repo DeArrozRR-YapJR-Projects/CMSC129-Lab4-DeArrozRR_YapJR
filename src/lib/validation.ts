@@ -1,3 +1,11 @@
 export const validateReminder = (data: any): boolean => {
-  throw new Error('Not implemented');
-};
+       if (!data || typeof data.title !== 'string') {
+         return false;
+       }
+       
+       if (data.title.trim().length < 3) {
+         return false;
+       }
+  
+      return true;
+    };
