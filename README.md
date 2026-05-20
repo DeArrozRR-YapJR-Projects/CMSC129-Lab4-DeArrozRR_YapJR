@@ -86,3 +86,6 @@ npx playwright test
    
 ### Unit Tests
 ![Unit Tests Passing](public/unit-tests-pass.png)
+
+### Integration Tests
+![Integration Tests Passing](public/integration-tests-pass.png)
