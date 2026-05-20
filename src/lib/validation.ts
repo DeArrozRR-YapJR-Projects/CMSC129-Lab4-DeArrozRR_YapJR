@@ -1,11 +1,3 @@
 export const validateReminder = (data: any): boolean => {
-       if (!data || typeof data.title !== 'string') {
-         return false;
-       }
-       
-       if (data.title.trim().length < 3) {
-         return false;
-       }
-  
-      return true;
+      return !!data && typeof data.title === 'string' && data.title.trim().length >= 3;
     };
