@@ -44,8 +44,8 @@
                <div className="flex gap-4">
                  <button onClick={() => setIsEditing(true)} className="text-blue-500
        hover:text-blue-700">Edit</button>
-                 <button onClick={() => onDelete(reminder.id)} className="text-red-500
-       hover:text-red-700 font-bold">✕</button>
+                 <button onClick={() => onDelete(reminder.id)} className="text-red-500 hover:text-red-700
+     font-bold">Delete</button>
                </div>
              </>
            )}
