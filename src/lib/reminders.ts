@@ -5,13 +5,20 @@ export interface Reminder {
 }
 
 export const addReminder = (reminders: Reminder[], title: string): Reminder[] => {
-  throw new Error('Not implemented');
+  const newReminder: Reminder = {
+    id: Math.random().toString(36).substring(2, 11),
+    title,
+    completed: false,
+  };
+  return [...reminders, newReminder];
 };
 
 export const deleteReminder = (reminders: Reminder[], id: string): Reminder[] => {
-  throw new Error('Not implemented');
+  return reminders.filter(reminder => reminder.id !== id);
 };
 
 export const toggleReminder = (reminders: Reminder[], id: string): Reminder[] => {
-  throw new Error('Not implemented');
+  return reminders.map(reminder =>
+    reminder.id === id ? { ...reminder, completed: !reminder.completed } : reminder
+  );
 };
